@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e17">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CryptoPulse">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <title>CryptoPulse - Worldwide Cryptocurrency Rewards & High-Conversion Advertising Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Confetti Canvas for Reward Celebrations -->
+  <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999;"></canvas>
+
+  <!-- Anti-Adblock Notice Banner (simulated/customizable) -->
+  <div id="adblockNoticeBanner" style="display:none;background:#f59e0b;color:#000;text-align:center;padding:10px 16px;font-weight:700;font-size:0.85rem;">
+    ⚠️ AdBlocker detected. To view PTC advertisements and receive crypto rewards, please consider whitelisting CryptoPulse.
+  </div>
+
+  <!-- ==========================================================================
+       SITE HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="javascript:void(0)" class="brand-logo" data-view="home">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+        <span>Crypto<span class="text-gradient">Pulse</span></span>
+      </a>
+
+      <!-- Main Navigation Menu -->
+      <nav class="main-nav">
+        <a class="nav-link active" data-view="home">Home</a>
+        <a class="nav-link" data-view="dashboard">Dashboard</a>
+        <a class="nav-link" data-view="faucet">Faucet</a>
+        <a class="nav-link" data-view="ptc">PTC Ads</a>
+        <a class="nav-link" data-view="shortlinks">Shortlinks</a>
+        <a class="nav-link" data-view="offerwalls">Offerwalls</a>
+        <a class="nav-link" data-view="challenges">Challenges</a>
+        <a class="nav-link" data-view="bonus">Daily Bonus</a>
+        <a class="nav-link" data-view="referrals">Referrals</a>
+        <a class="nav-link" data-view="wallet">Wallet</a>
+        <a class="nav-link advertiser-only" data-view="advertiser">Advertise</a>
+        <a class="nav-link admin-only" data-view="admin" style="color:var(--accent-purple);">Admin</a>
+        <a class="nav-link" data-view="proofs">Proofs</a>
+        <a class="nav-link" data-view="faq">FAQ</a>
+        <a class="nav-link" data-view="support">Support</a>
+      </nav>
+
+      <!-- Right Header Actions (Balance pill, Demo Switcher, Theme toggle, Mobile Menu) -->
+      <div class="header-actions">
+        
+        <!-- User Balance Pill -->
+        <div class="user-balance-pill" onclick="navigateTo('wallet')">
+          <div class="balance-coins">
+            <span>🪙</span>
+            <span id="headerCoins">2,850</span>
+          </div>
+          <div class="balance-usd" id="headerUsd">≈ $2.85</div>
+          <span class="badge badge-primary" id="headerLevelBadge">Lvl 4</span>
+        </div>
+
+        <!-- Worldwide Currency Selector -->
+        <div class="global-currency-pill" title="Worldwide Currency Display">
+          <span>🌐</span>
+          <select id="globalCurrencySelect">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="JPY">JPY (¥)</option>
+            <option value="CAD">CAD (CA$)</option>
+            <option value="AUD">AUD (A$)</option>
+            <option value="BRL">BRL (R$)</option>
+            <option value="NGN">NGN (₦)</option>
+            <option value="INR">INR (₹)</option>
+            <option value="RUB">RUB (₽)</option>
+            <option value="VND">VND (₫)</option>
+            <option value="IDR">IDR (Rp)</option>
+            <option value="TRY">TRY (₺)</option>
+            <option value="PHP">PHP (₱)</option>
+          </select>
+        </div>
+
+        <!-- Quick Demo Switcher Selector -->
+        <div class="demo-user-selector" title="Switch between Earner, Advertiser, and SuperAdmin profiles">
+          <span style="color:var(--text-dim);font-weight:600;">Role:</span>
+          <select id="demoUserSelect">
+            <option value="Alex_Crypto">Alex (Earner)</option>
+            <option value="CryptoNewbie">Newbie ($0.12)</option>
+            <option value="AlphaMedia_Ads">AlphaMedia (Advertiser)</option>
+            <option value="SuperAdmin">SuperAdmin (Admin)</option>
+          </select>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Light / Dark Mode">
+          🌓
+        </button>
+
+        <!-- Login / Register buttons (shown when unauthenticated or for quick modal access) -->
+        <button class="btn btn-secondary btn-sm" onclick="AuthController.showLogin()">Login</button>
+        <button class="btn btn-primary btn-sm" onclick="AuthController.showRegister()">Join Free</button>
+
+        <!-- Mobile Drawer Toggle -->
+        <button id="mobileMenuToggle" class="icon-btn mobile-toggle">
+          ☰
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       TOP SPONSORED ADVERTISEMENT BANNER (Google AdSense Zone)
+       Cleanly separated from reward PTC tasks
+       ========================================================================== -->
+  <div class="adsense-zone leaderboard">
+    <div class="adsense-box">
+      <div class="adsense-tag">
+        <span>Sponsored Advertisement</span> &bull; <span>Google AdSense / Media.net Network</span>
+      </div>
+      <div class="adsense-mock-content">
+        <div style="font-size:2rem;">🛡️</div>
+        <div class="adsense-mock-text">
+          <h5>Hardware Crypto Vault - Keep Your Private Keys Secure</h5>
+          <p>Bank-grade EAL6+ secure element chips. Protect your BTC, ETH, and Solana from online threats.</p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="showToast('AdSense click simulated. Directing to sponsor site.', 'info')">Visit Sponsor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Off-Canvas Sidebar Backdrop (for iPhone & Android touch tap-to-close) -->
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <!-- ==========================================================================
+       MAIN APP CONTAINER WITH SIDEBAR & CONTENT VIEWS
+       ========================================================================== -->
+  <div class="app-container">
+
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar">
+      
+      <div class="sidebar-heading">Navigation</div>
+      <div class="sidebar-link active" data-view="dashboard">
+        <div class="sidebar-link-content">
+          <span>📊</span>
+          <span>Dashboard</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="home">
+        <div class="sidebar-link-content">
+          <span>🏠</span>
+          <span>Homepage</span>
+        </div>
+      </div>
+
+      <div class="sidebar-heading">Earn Crypto</div>
+      <div class="sidebar-link" data-view="faucet">
+        <div class="sidebar-link-content">
+          <span>💧</span>
+          <span>Crypto Faucet</span>
+        </div>
+        <span class="badge badge-green" id="sideFaucetStatus">READY</span>
+      </div>
+      <div class="sidebar-link" data-view="ptc">
+        <div class="sidebar-link-content">
+          <span>👁️</span>
+          <span>PTC Advertisements</span>
+        </div>
+        <span class="badge badge-primary">HOT</span>
+      </div>
+      <div class="sidebar-link" data-view="shortlinks">
+        <div class="sidebar-link-content">
+          <span>🔗</span>
+          <span>Shortlinks Wall</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="offerwalls">
+        <div class="sidebar-link-content">
+          <span>📋</span>
+          <span>Offerwalls & Surveys</span>
+        </div>
+        <span class="badge badge-gold">+15%</span>
+      </div>
+      <div class="sidebar-link" data-view="challenges">
+        <div class="sidebar-link-content">
+          <span>🏆</span>
+          <span>Challenges</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="bonus">
+        <div class="sidebar-link-content">
+          <span>🌟</span>
+          <span>Daily Streak Bonus</span>
+        </div>
+      </div>
+
+      <div class="sidebar-heading">Finances</div>
+      <div class="sidebar-link" data-view="wallet">
+        <div class="sidebar-link-content">
+          <span>💳</span>
+          <span>User Wallet</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="deposit">
+        <div class="sidebar-link-content">
+          <span>📥</span>
+          <span>Deposit Crypto</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="withdraw">
+        <div class="sidebar-link-content">
+          <span>📤</span>
+          <span>Withdraw Crypto</span>
+        </div>
+        <span class="badge badge-cyan">FaucetPay</span>
+      </div>
+
+      <div class="sidebar-heading">Growth & Advertisers</div>
+      <div class="sidebar-link" data-view="referrals">
+        <div class="sidebar-link-content">
+          <span>👥</span>
+          <span>Referral System</span>
+        </div>
+        <span class="badge badge-gold">20% Ref</span>
+      </div>
+      <div class="sidebar-link" data-view="advertiser">
+        <div class="sidebar-link-content">
+          <span>📢</span>
+          <span>Advertiser Dashboard</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="advertiser-create">
+        <div class="sidebar-link-content">
+          <span>➕</span>
+          <span>Create Campaign</span>
+        </div>
+      </div>
+
+      <div class="sidebar-heading admin-only">Administration</div>
+      <div class="sidebar-link admin-only" data-view="admin">
+        <div class="sidebar-link-content">
+          <span>⚙️</span>
+          <span>SuperAdmin Panel</span>
+        </div>
+        <span class="badge badge-purple">ROOT</span>
+      </div>
+
+      <div class="sidebar-heading">Account & Help</div>
+      <div class="sidebar-link" data-view="profile">
+        <div class="sidebar-link-content">
+          <span>🛡️</span>
+          <span>Profile & Security</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="proofs">
+        <div class="sidebar-link-content">
+          <span>🧾</span>
+          <span>Payment Proofs</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="faq">
+        <div class="sidebar-link-content">
+          <span>❓</span>
+          <span>FAQ & Guides</span>
+        </div>
+      </div>
+      <div class="sidebar-link" data-view="support">
+        <div class="sidebar-link-content">
+          <span>💬</span>
+          <span>Support Tickets</span>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- App Content Area (Container for all views) -->
+    <main class="app-content">
+
+      <!-- ====================================================================
+           1. VIEW: HOMEPAGE (PUBLIC HOME)
+           ==================================================================== -->
+      <section id="view-home" class="view-panel">
+        
+        <!-- Hero Section -->
+        <div class="hero-section">
+          <div class="hero-badge">
+            <span>🌐</span> Worldwide Access Enabled &bull; 200+ Countries Supported &bull; Android, iPhone &amp; Desktop Ready
+          </div>
+          <h1 class="hero-title">
+            Earn Free Crypto Every 5 Minutes &amp; Advertise to <span class="text-gradient">Users Across The Globe</span>
+          </h1>
+          <p class="hero-subtitle">
+            Open worldwide to all 200+ countries with zero geographical restrictions. Complete high-paying faucets, PTC ads, surveys, and shortlinks on your iPhone, Android phone, or computer. Withdraw instantly to FaucetPay or direct blockchain wallets in BTC, ETH, USDT, LTC, DOGE, TRX, and SOL!
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn btn-primary btn-lg" onclick="AuthController.showRegister()">🚀 Start Earning Free Crypto (Worldwide)</button>
+            <button class="btn btn-secondary btn-lg" onclick="navigateTo('advertiser-create')">📢 Create Ad Campaign</button>
+          </div>
+        </div>
+
+        <!-- Live Platform Stats Strip -->
+        <div class="stats-strip">
+          <div class="stat-card">
+            <div class="stat-card-title">Total Paid Out</div>
+            <div class="stat-card-value text-gradient">$1,482,910+</div>
+            <div class="stat-card-sub">▲ Verified on Blockchain</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-title">Active Members</div>
+            <div class="stat-card-value">324,850</div>
+            <div class="stat-card-sub">▲ +1,240 Today</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-title">Faucet Claims Today</div>
+            <div class="stat-card-value">54,120</div>
+            <div class="stat-card-sub">⏱️ Every 5 Minutes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-title">Campaign Impressions</div>
+            <div class="stat-card-value">12.8M+</div>
+            <div class="stat-card-sub">⚡ 100% Human Traffic</div>
+          </div>
+        </div>
+
+        <!-- Supported Cryptocurrencies Marquee -->
+        <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:20px;text-align:center;margin-bottom:60px;">
+          <div style="font-size:0.8rem;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Supported Cryptocurrencies & Payout Networks</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:30px;flex-wrap:wrap;font-weight:700;font-size:1.1rem;">
+            <span style="color:#f7931a;">₿ Bitcoin (BTC)</span>
+            <span style="color:#627eea;">⟠ Ethereum (ETH)</span>
+            <span style="color:#26a17b;">₮ Tether (USDT TRC-20)</span>
+            <span style="color:#345d9d;">Ł Litecoin (LTC)</span>
+            <span style="color:#c2a633;">Ð Dogecoin (DOGE)</span>
+            <span style="color:#ef0027;">⚡ Tron (TRX)</span>
+            <span style="color:#14f195;">◎ Solana (SOL)</span>
+            <span class="badge badge-primary">FaucetPay Instant</span>
+          </div>
+        </div>
+
+        <!-- How it works 3-Step Section -->
+        <div class="section-container" style="padding-top:0;">
+          <div class="section-header">
+            <div class="section-tag">Simple & Automated</div>
+            <h2 class="section-title">How To Start Earning in 3 Steps</h2>
+            <p class="section-desc">Get started in under 30 seconds with zero initial investment or KYC barriers.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+            <div class="card" style="text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:16px;">📝</div>
+              <h3>1. Create an Account</h3>
+              <p style="color:var(--text-muted);margin-top:8px;">Sign up with your username and email. No invasive verification required.</p>
+            </div>
+            <div class="card" style="text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:16px;">⚡</div>
+              <h3>2. Complete Quick Tasks</h3>
+              <p style="color:var(--text-muted);margin-top:8px;">Claim from the 5-minute faucet, click PTC ads, solve shortlinks, or fill surveys.</p>
+            </div>
+            <div class="card" style="text-align:center;">
+              <div style="font-size:2.5rem;margin-bottom:16px;">💰</div>
+              <h3>3. Instant Withdrawal</h3>
+              <p style="color:var(--text-muted);margin-top:8px;">Withdraw directly to your FaucetPay wallet starting at just $0.50 with zero fees!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ways to Earn Grid -->
+        <div class="section-container">
+          <div class="section-header">
+            <div class="section-tag">Multiple Income Streams</div>
+            <h2 class="section-title">Endless Ways to Accumulate Crypto</h2>
+            <p class="section-desc">Choose your favorite earning methods or combine all of them to maximize your daily rewards.</p>
+          </div>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon" style="background:rgba(6,182,212,0.15);color:#06b6d4;">💧</div>
+              <h3>Crypto Faucet</h3>
+              <p>Claim free coins every 5 minutes. Earn daily loyalty streak bonuses up to +100% on every single claim!</p>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('faucet')">Go to Faucet →</button>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon" style="background:rgba(99,102,241,0.15);color:#818cf8;">👁️</div>
+              <h3>Paid-To-Click (PTC)</h3>
+              <p>View sponsored websites and video ads for 5 to 60 seconds to receive high coin rewards directly.</p>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('ptc')">View PTC Ads →</button>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon" style="background:rgba(139,92,246,0.15);color:#c084fc;">🔗</div>
+              <h3>Shortlinks Wall</h3>
+              <p>Visit fast, secure shortlink redirects and earn high payouts plus bonus experience points.</p>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('shortlinks')">Visit Shortlinks →</button>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon" style="background:rgba(245,158,11,0.15);color:#fbbf24;">📋</div>
+              <h3>Surveys & Offerwalls</h3>
+              <p>Partnered with CPX Research, BitLabs, Wannads, Monlix, and TimeWall for up to $25 per survey.</p>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('offerwalls')">View Offers →</button>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon" style="background:rgba(16,185,129,0.15);color:#34d399;">🌟</div>
+              <h3>Daily Login Bonus</h3>
+              <p>Keep a daily check-in streak to unlock growing coin bags, EXP boosts, and faucet multiplier tickets.</p>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('bonus')">Claim Bonus →</button>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon" style="background:rgba(239,68,68,0.15);color:#f87171;">👥</div>
+              <h3>20% Referral Program</h3>
+              <p>Invite friends and colleagues to receive 20% lifetime commissions on their faucet claims and 10% on ads!</p>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('referrals')">Referral Center →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section for Advertisers -->
+        <div class="section-container" style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-xl);margin-bottom:60px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:30px;">
+            <div style="flex:1;min-width:300px;">
+              <span class="badge badge-gold">For Crypto Advertisers</span>
+              <h2 style="font-size:2.2rem;margin:12px 0 16px;">Drive Real, High-Intent Crypto Users to Your Project</h2>
+              <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.6;margin-bottom:24px;">
+                Showcase your decentralized exchange, NFT drops, Telegram bots, or crypto faucets. We guarantee 100% human views with active window focus protection, anti-cheat detection, and geo-targeting.
+              </p>
+              <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="navigateTo('advertiser-create')">Create Ad Campaign</button>
+                <button class="btn btn-secondary" onclick="navigateTo('advertiser')">Advertiser Portal</button>
+              </div>
+            </div>
+            <div style="flex:1;min-width:300px;background:var(--bg-surface);padding:24px;border-radius:var(--radius-lg);border:1px solid var(--border-active);">
+              <h4>Advertising Features</h4>
+              <ul style="list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:10px;font-size:0.95rem;">
+                <li>✅ <strong>Instant Campaign Delivery:</strong> Ads appear immediately inside user dashboards.</li>
+                <li>✅ <strong>Window Focus Detection:</strong> Timers pause if user changes tabs.</li>
+                <li>✅ <strong>YouTube & Video Ads:</strong> Guaranteed video watch duration.</li>
+                <li>✅ <strong>Extremely Low CPC:</strong> Pricing starts from only $0.0003 per human view.</li>
+                <li>✅ <strong>Fund with Main Balance:</strong> Get +5% bonus when converting earner coins!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           2. VIEW: USER DASHBOARD
+           ==================================================================== -->
+      <section id="view-dashboard" class="view-panel active">
+        
+        <!-- Welcome Banner -->
+        <div class="card card-glow" style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <h2 style="font-size:1.6rem;">Welcome back, <span id="headerUsername" class="text-gradient">Alex_Crypto</span>!</h2>
+              <span class="badge badge-primary" id="headerUserRole">USER</span>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.95rem;">
+              Account Status: <strong style="color:var(--accent-green);">Verified</strong> &bull; Loyalty Streak: <strong style="color:var(--accent-gold);" id="dashBonusMultiplier">+4% Loyalty (1.04x)</strong>
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="navigateTo('faucet')">💧 Claim Faucet</button>
+            <button class="btn btn-secondary btn-sm" onclick="navigateTo('ptc')">👁️ View Ads</button>
+            <button class="btn btn-accent btn-sm" onclick="navigateTo('withdraw')">📤 Withdraw</button>
+          </div>
+        </div>
+
+        <!-- 4 Key Financial & Stat Cards -->
+        <div class="dashboard-grid">
+          
+          <!-- Balance Card -->
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Account Balance</div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:2rem;font-weight:900;color:var(--text-main);" id="dashCoinsBalance">2,850</span>
+              <span style="color:var(--text-dim);font-size:0.9rem;">Coins</span>
+            </div>
+            <div style="font-size:0.95rem;color:var(--accent-green);font-weight:700;margin-top:4px;" id="dashUsdBalance">≈ $2.85 USD</div>
+            <div style="margin-top:14px;display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm" style="flex:1;" onclick="navigateTo('withdraw')">Withdraw</button>
+              <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="navigateTo('deposit')">Deposit</button>
+            </div>
+          </div>
+
+          <!-- Level & Experience Card -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;">Account Level</div>
+              <span class="badge badge-purple" id="dashLevel">Level 4</span>
+            </div>
+            <div style="font-size:1.15rem;font-weight:800;color:var(--text-main);margin-bottom:10px;" id="dashExpText">340 / 500 EXP (68%)</div>
+            <div style="width:100%;height:8px;background:var(--bg-surface);border-radius:9999px;overflow:hidden;margin-bottom:12px;">
+              <div id="dashExpFill" style="height:100%;width:68%;background:linear-gradient(90deg,var(--primary),var(--secondary));"></div>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-dim);">Higher levels unlock higher faucet rewards and lower withdrawal thresholds.</div>
+          </div>
+
+          <!-- Tasks Available Card -->
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:10px;">Available Tasks Today</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;">
+              <div style="display:flex;justify-content:space-between;">
+                <span style="color:var(--text-muted);">Faucet Claims:</span>
+                <strong id="dashFaucetLeft" style="color:var(--secondary);">19 / 25 left</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <span style="color:var(--text-muted);">PTC Advertisements:</span>
+                <strong id="dashPtcCount" style="color:var(--accent-green);">4 Available</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <span style="color:var(--text-muted);">Shortlinks:</span>
+                <strong id="dashShortlinksCount" style="color:var(--accent-gold);">10 Available</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Daily Streak Card -->
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Daily Check-In Streak</div>
+            <div style="font-size:1.75rem;font-weight:900;color:var(--accent-gold);margin-bottom:4px;">🔥 4 Days Active</div>
+            <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:14px;">Log in tomorrow to receive Day 5 reward (150 Coins + 30 EXP)!</p>
+            <button class="btn btn-gold btn-sm" style="width:100%;" onclick="navigateTo('bonus')">View Streak Calendar</button>
+          </div>
+
+        </div>
+
+        <!-- Recent Activity Ledger on Dashboard -->
+        <div class="card" style="margin-top:24px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+            <h3 style="font-size:1.2rem;">Recent Account Activity</h3>
+            <button class="btn btn-outline btn-sm" onclick="navigateTo('wallet')">View Full Ledger →</button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description / Tx Hash</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date & Time</th>
+                </tr>
+              </thead>
+              <tbody id="dashRecentActivityBody">
+                <!-- Populated dynamically by app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           3. VIEW: FAUCET
+           ==================================================================== -->
+      <section id="view-faucet" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-cyan">Instant Rewards</span>
+          <h2 class="section-title">Cryptocurrency Faucet</h2>
+          <p class="section-desc">Claim free coins every 5 minutes. Solve the anti-bot challenge and claim your reward!</p>
+        </div>
+
+        <!-- Faucet Main Box -->
+        <div class="faucet-box">
+          
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px;">
+            <span class="badge badge-primary" id="faucetClaimsLeftBadge">19 / 25 claims left today</span>
+            <span class="badge badge-gold" id="faucetLoyaltyBonusBadge">+4% Loyalty Bonus</span>
+          </div>
+
+          <div class="faucet-reward-badge">
+            <span>🎁 Claim Reward:</span>
+            <strong id="faucetBaseRewardDisplay">52 Coins (Base 50 + 2 Bonus)</strong>
+          </div>
+
+          <!-- Cooldown Timer View (if timer active) -->
+          <div id="faucetCooldownBox" style="display:none;">
+            <div style="font-size:0.9rem;color:var(--text-muted);">Please wait for the timer to finish:</div>
+            <div class="faucet-timer-display" id="faucetTimerDisplay">04:12</div>
+            <p style="color:var(--text-dim);font-size:0.85rem;">While you wait, you can browse <a href="javascript:void(0)" onclick="navigateTo('ptc')">PTC Advertisements</a> or complete <a href="javascript:void(0)" onclick="navigateTo('shortlinks')">Shortlinks</a>!</p>
+            <button class="btn btn-outline btn-sm" style="margin-top:16px;opacity:0.7;" onclick="FaucetController.resetTimerDebug()">⚡ Skip Cooldown (Demo Test)</button>
+          </div>
+
+          <!-- Ready to Claim View -->
+          <div id="faucetReadyBox">
+            <div style="font-size:1.1rem;font-weight:700;color:var(--accent-green);margin-bottom:16px;">
+              ✅ Faucet is Ready to Claim!
+            </div>
+
+            <!-- Anti-Bot Math Captcha -->
+            <div class="captcha-container">
+              <div class="captcha-header">
+                <span>Anti-Bot Verification</span>
+                <span style="color:var(--secondary);cursor:pointer;" onclick="FaucetController.generateCaptcha()">↻ New Challenge</span>
+              </div>
+              <div class="captcha-challenge">
+                <div class="captcha-question" id="faucetCaptchaQuestion">Solve: 7 + 5 = ?</div>
+                <input type="number" id="faucetCaptchaInput" class="form-control captcha-input" placeholder="Result">
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg" style="min-width:240px;box-shadow:0 0 20px rgba(99,102,241,0.5);" onclick="FaucetController.claim()">
+              💧 Claim Coins Now
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Faucet Rules and Info -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:900px;margin:0 auto;">
+          <div class="card">
+            <h4>Loyalty Bonus</h4>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:6px;">For each consecutive day you claim from the faucet, you gain +1% bonus up to a maximum of +100%!</p>
+          </div>
+          <div class="card">
+            <h4>Anti-Bot Safeguards</h4>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:6px;">VPNs, proxies, and automated scripts are blocked to preserve fair distribution for real users.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           4. VIEW: PTC ADVERTISEMENTS
+           ==================================================================== -->
+      <section id="view-ptc" class="view-panel">
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+          <div>
+            <span class="badge badge-primary">Paid-To-Click</span>
+            <h2 class="section-title">PTC Advertisements</h2>
+            <p class="section-desc">View websites and sponsored videos for the specified duration to receive instant coin rewards.</p>
+          </div>
+          <button class="btn btn-accent" onclick="navigateTo('advertiser-create')">📢 Advertise Your Site</button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;overflow-x:auto;padding-bottom:6px;">
+          <button class="btn btn-primary btn-sm ptc-filter-btn active" data-filter="all" onclick="PtcController.setFilter('all')">All Ads</button>
+          <button class="btn btn-secondary btn-sm ptc-filter-btn" data-filter="ptc" onclick="PtcController.setFilter('ptc')">Standard PTC</button>
+          <button class="btn btn-secondary btn-sm ptc-filter-btn" data-filter="window" onclick="PtcController.setFilter('window')">Window Ads</button>
+          <button class="btn btn-secondary btn-sm ptc-filter-btn" data-filter="iframe" onclick="PtcController.setFilter('iframe')">Iframe Ads</button>
+          <button class="btn btn-secondary btn-sm ptc-filter-btn" data-filter="youtube" onclick="PtcController.setFilter('youtube')">YouTube Videos</button>
+        </div>
+
+        <!-- Ads Grid -->
+        <div class="ptc-grid" id="ptcAdsGrid">
+          <!-- Dynamically populated by ptc.js -->
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           5. VIEW: SHORTLINKS
+           ==================================================================== -->
+      <section id="view-shortlinks" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-purple">High Payouts</span>
+          <h2 class="section-title">Shortlinks Wall</h2>
+          <p class="section-desc">Visit links and pass security checkpoints to earn boosted coins and experience points.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;" id="shortlinksListContainer">
+          <!-- Dynamically rendered by shortlinks.js -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           6. VIEW: OFFERWALLS & SURVEYS
+           ==================================================================== -->
+      <section id="view-offerwalls" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-gold">Maximum Earnings</span>
+          <h2 class="section-title">Offerwalls & Surveys</h2>
+          <p class="section-desc">Complete surveys, test new apps, and earn up to $25 per completed questionnaire.</p>
+        </div>
+
+        <!-- Provider Buttons -->
+        <div id="offerwallProvidersList" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Offers Grid -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;" id="offerwallsGrid">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Postback Tester Box for Developers / Admin -->
+        <div class="card" style="margin-top:40px;background:var(--bg-surface);">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <h4 style="font-size:1.05rem;">Offerwall Postback API Simulator</h4>
+              <p style="font-size:0.8rem;color:var(--text-muted);">Simulate an incoming server-to-server webhook postback from CPX Research or BitLabs.</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <input type="number" id="testPostbackCoins" class="form-control" placeholder="Coins" value="850" style="width:110px;">
+              <button class="btn btn-secondary btn-sm" onclick="OfferwallsController.simulatePostback(document.getElementById('testPostbackCoins').value)">Simulate Postback</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           7. VIEW: CHALLENGES
+           ==================================================================== -->
+      <section id="view-challenges" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-green">Achievements</span>
+          <h2 class="section-title">Daily & Weekly Challenges</h2>
+          <p class="section-desc">Complete goals across faucets, PTC ads, and shortlinks to claim bonus coin crates.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;" id="challengesListContainer">
+          <!-- Dynamically populated by challenges.js -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           8. VIEW: DAILY BONUS
+           ==================================================================== -->
+      <section id="view-bonus" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-gold">Loyalty Program</span>
+          <h2 class="section-title">7-Day Daily Streak Bonus</h2>
+          <p class="section-desc">Check in every single day to climb the streak multiplier and earn massive rewards on Day 7!</p>
+        </div>
+
+        <div class="card" style="text-align:center;padding:36px;margin-bottom:30px;">
+          <div style="font-size:1rem;color:var(--text-muted);margin-bottom:6px;">Your Active Streak</div>
+          <div style="font-size:2.5rem;font-weight:900;color:var(--accent-gold);margin-bottom:14px;" id="bonusCurrentStreakDisplay">
+            4 Days Consecutive Streak
+          </div>
+
+          <!-- Streak 7-Day Matrix -->
+          <div class="streak-grid" id="dailyBonusStreakGrid">
+            <!-- Populated dynamically by challenges.js -->
+          </div>
+
+          <div style="margin-top:28px;">
+            <button id="claimDailyBonusBtn" class="btn btn-gold btn-lg" onclick="BonusController.claim()">
+              🌟 Claim Today's Bonus
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           9. VIEW: REFERRAL SYSTEM
+           ==================================================================== -->
+      <section id="view-referrals" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-gold">Affiliate Program</span>
+          <h2 class="section-title">Referral System & Banners</h2>
+          <p class="section-desc">Earn 20% on all Faucet claims, 10% on PTC views, and 5% on Advertiser deposits made by your invited users!</p>
+        </div>
+
+        <!-- Referral Link & Stats -->
+        <div class="dashboard-grid" style="margin-bottom:28px;">
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Total Referrals</div>
+            <div style="font-size:2rem;font-weight:900;" id="refTotalCount">14</div>
+            <div style="font-size:0.8rem;color:var(--accent-green);margin-top:4px;">12 Active Earners</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Referral Commissions</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--accent-gold);" id="refTotalEarnings">680 Coins</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;" id="refEarningsUsd">≈ $0.68 USD</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Commission Rates</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">
+              <div>• Faucet Claims: <strong style="color:var(--text-main);">20%</strong></div>
+              <div>• PTC Advertisements: <strong style="color:var(--text-main);">10%</strong></div>
+              <div>• Shortlink Completions: <strong style="color:var(--text-main);">10%</strong></div>
+              <div>• Advertiser Deposits: <strong style="color:var(--text-main);">5%</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Share Links Box -->
+        <div class="card" style="margin-bottom:28px;">
+          <h3 style="margin-bottom:14px;">Your Unique Invite Links</h3>
+          
+          <div class="form-group">
+            <label>Referral Link</label>
+            <div style="display:flex;gap:10px;">
+              <input type="text" id="referralLinkInput" class="form-control" readonly style="font-family:monospace;">
+              <button class="btn btn-primary" onclick="ReferralController.copyLink()">Copy Link</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Referral Code</label>
+            <div style="display:flex;gap:10px;">
+              <input type="text" id="referralCodeInput" class="form-control" readonly style="width:200px;font-family:monospace;font-weight:700;">
+              <button class="btn btn-secondary" onclick="ReferralController.copyCode()">Copy Code</button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap;">
+            <span style="font-size:0.85rem;font-weight:600;color:var(--text-muted);">Share directly:</span>
+            <button class="btn btn-secondary btn-sm" onclick="ReferralController.share('twitter')">Share on X / Twitter</button>
+            <button class="btn btn-secondary btn-sm" onclick="ReferralController.share('telegram')">Share on Telegram</button>
+            <button class="btn btn-secondary btn-sm" onclick="ReferralController.share('whatsapp')">Share on WhatsApp</button>
+          </div>
+        </div>
+
+        <!-- Promotional HTML Banners for Webmasters -->
+        <div class="card">
+          <h3 style="margin-bottom:14px;">Promotional Web Banners</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;">Embed these banners on your website, blog, or forum signature to attract passive referrals.</p>
+
+          <div class="form-group">
+            <label>Leaderboard Banner (728x90 px)</label>
+            <textarea id="bannerCode728" class="form-control" rows="2" readonly style="font-family:monospace;font-size:0.8rem;"></textarea>
+            <button class="btn btn-secondary btn-sm" style="margin-top:8px;" onclick="ReferralController.copyBannerCode('bannerCode728')">Copy 728x90 HTML</button>
+          </div>
+
+          <div class="form-group" style="margin-top:20px;">
+            <label>Medium Rectangle Banner (300x250 px)</label>
+            <textarea id="bannerCode300" class="form-control" rows="2" readonly style="font-family:monospace;font-size:0.8rem;"></textarea>
+            <button class="btn btn-secondary btn-sm" style="margin-top:8px;" onclick="ReferralController.copyBannerCode('bannerCode300')">Copy 300x250 HTML</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           10. VIEW: USER WALLET
+           ==================================================================== -->
+      <section id="view-wallet" class="view-panel">
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+          <div>
+            <span class="badge badge-primary">Financial Hub</span>
+            <h2 class="section-title">User Wallet & Balances</h2>
+            <p class="section-desc">Manage your crypto assets, track earnings ledger, and request withdrawals.</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-secondary" onclick="navigateTo('deposit')">Deposit</button>
+            <button class="btn btn-primary" onclick="navigateTo('withdraw')">Withdraw</button>
+          </div>
+        </div>
+
+        <!-- Total Balance Banner -->
+        <div class="card card-glow" style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+          <div>
+            <div style="font-size:0.85rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;">Total Coin Balance</div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:2.4rem;font-weight:900;" id="walletTotalCoins">2,850</span>
+              <span style="color:var(--secondary);font-size:1.1rem;font-weight:700;">Coins</span>
+            </div>
+            <div style="font-size:1.15rem;color:var(--accent-green);font-weight:800;margin-top:4px;" id="walletTotalUsd">≈ $2.85 USD</div>
+          </div>
+
+          <!-- Multi-Currency Equivalents Matrix -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;flex:1;max-width:700px;">
+            <div style="background:var(--bg-surface);padding:10px 14px;border-radius:var(--radius-md);">
+              <div style="font-size:0.75rem;color:var(--text-dim);font-weight:600;">Bitcoin</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#f7931a;" id="walletBtcVal">0.00003083 BTC</div>
+            </div>
+            <div style="background:var(--bg-surface);padding:10px 14px;border-radius:var(--radius-md);">
+              <div style="font-size:0.75rem;color:var(--text-dim);font-weight:600;">Tether TRC20</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#26a17b;" id="walletUsdtVal">2.85 USDT</div>
+            </div>
+            <div style="background:var(--bg-surface);padding:10px 14px;border-radius:var(--radius-md);">
+              <div style="font-size:0.75rem;color:var(--text-dim);font-weight:600;">Litecoin</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#345d9d;" id="walletLtcVal">0.02956 LTC</div>
+            </div>
+            <div style="background:var(--bg-surface);padding:10px 14px;border-radius:var(--radius-md);">
+              <div style="font-size:0.75rem;color:var(--text-dim);font-weight:600;">Dogecoin</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#c2a633;" id="walletDogeVal">7.40 DOGE</div>
+            </div>
+            <div style="background:var(--bg-surface);padding:10px 14px;border-radius:var(--radius-md);">
+              <div style="font-size:0.75rem;color:var(--text-dim);font-weight:600;">Tron</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#ef0027;" id="walletTrxVal">13.07 TRX</div>
+            </div>
+            <div style="background:var(--bg-surface);padding:10px 14px;border-radius:var(--radius-md);">
+              <div style="font-size:0.75rem;color:var(--text-dim);font-weight:600;">Solana</div>
+              <div style="font-size:0.9rem;font-weight:700;color:#14f195;" id="walletSolVal">0.01328 SOL</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction Ledger -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+            <h3>Transaction Ledger</h3>
+            
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm tx-filter-btn active" data-filter="all" onclick="WalletController.setTxFilter('all')">All</button>
+              <button class="btn btn-secondary btn-sm tx-filter-btn" data-filter="faucet" onclick="WalletController.setTxFilter('faucet')">Faucet</button>
+              <button class="btn btn-secondary btn-sm tx-filter-btn" data-filter="ptc" onclick="WalletController.setTxFilter('ptc')">PTC</button>
+              <button class="btn btn-secondary btn-sm tx-filter-btn" data-filter="shortlink" onclick="WalletController.setTxFilter('shortlink')">Shortlinks</button>
+              <button class="btn btn-secondary btn-sm tx-filter-btn" data-filter="withdrawal" onclick="WalletController.setTxFilter('withdrawal')">Withdrawals</button>
+              <button class="btn btn-secondary btn-sm tx-filter-btn" data-filter="deposit" onclick="WalletController.setTxFilter('deposit')">Deposits</button>
+              <button class="btn btn-outline btn-sm" onclick="WalletController.exportCsv()">📥 Export CSV</button>
+            </div>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description / Tx Hash</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date & Time</th>
+                </tr>
+              </thead>
+              <tbody id="walletTxLedgerBody">
+                <!-- Dynamically rendered by wallet.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           11. VIEW: DEPOSITS & PAYMENTS
+           ==================================================================== -->
+      <section id="view-deposit" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-green">Funding & Payments</span>
+          <h2 class="section-title">Deposit Crypto</h2>
+          <p class="section-desc">Deposit cryptocurrency to fund your advertiser campaigns or upgrade your account tier.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+          
+          <!-- Deposit Setup Form -->
+          <div class="card">
+            <h3 style="margin-bottom:18px;">Deposit Options</h3>
+
+            <div class="form-group">
+              <label>Destination Account</label>
+              <select id="depositTargetSelect" class="form-control">
+                <option value="advertiser">Advertiser Campaign Balance (USD)</option>
+                <option value="earner">Main Account Coins Balance</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Select Cryptocurrency</label>
+              <select id="depositCryptoSelect" class="form-control" onchange="WalletController.updateDepositMethod()">
+                <option value="USDT">Tether (USDT TRC-20)</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="LTC">Litecoin (LTC)</option>
+                <option value="DOGE">Dogecoin (DOGE)</option>
+                <option value="SOL">Solana (SOL)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="depositMethodSelect" class="form-control" onchange="WalletController.updateDepositMethod()">
+                <option value="direct">Direct Blockchain Deposit (Generates Address & QR)</option>
+                <option value="faucetpay">FaucetPay Merchant Instant API</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Deposit Amount (USD Equivalent)</label>
+              <input type="number" id="depositAmountInput" class="form-control" value="25.00" min="5" step="5">
+              <div style="font-size:0.75rem;color:var(--accent-gold);margin-top:4px;">✨ Deposits over $20 receive a +5% bonus credit!</div>
+            </div>
+
+            <div style="margin-top:24px;">
+              <button class="btn btn-primary" style="width:100%;" onclick="WalletController.simulateDepositSuccess()">
+                ⚡ Simulate Successful Deposit (Test Sandbox)
+              </button>
+            </div>
+          </div>
+
+          <!-- Address & QR Box -->
+          <div class="card" style="text-align:center;">
+            <h3 style="margin-bottom:14px;">Deposit Address & QR</h3>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:20px;">Send the exact amount to the generated address below.</p>
+
+            <div id="depositQrContainer" style="margin-bottom:20px;display:inline-block;">
+              <!-- Clean SVG QR Code generated by wallet.js -->
+            </div>
+
+            <div class="form-group" style="text-align:left;">
+              <label>Deposit Address</label>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="depositAddressDisplay" class="form-control" readonly style="font-family:monospace;font-size:0.85rem;">
+                <button class="btn btn-secondary" onclick="WalletController.copyDepositAddress()">Copy</button>
+              </div>
+            </div>
+
+            <div style="font-size:0.8rem;color:var(--text-dim);margin-top:14px;">
+              Requires 1 network confirmation. Credited automatically upon confirmation.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           12. VIEW: WITHDRAWALS
+           ==================================================================== -->
+      <section id="view-withdraw" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-cyan">Fast Payouts</span>
+          <h2 class="section-title">Withdraw Cryptocurrency</h2>
+          <p class="section-desc">Withdraw your earnings directly to your FaucetPay micro-wallet or direct blockchain address.</p>
+        </div>
+
+        <div style="max-width:680px;margin:0 auto;">
+          <div class="card">
+            
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--border-subtle);margin-bottom:20px;">
+              <span style="font-weight:600;color:var(--text-muted);">Available Balance:</span>
+              <span style="font-size:1.25rem;font-weight:800;color:var(--accent-green);" id="withdrawAvailBalance">2,850 Coins ($2.85)</span>
+            </div>
+
+            <form onsubmit="event.preventDefault(); WalletController.submitWithdrawal();">
+              
+              <div class="form-group">
+                <label>Select Cryptocurrency</label>
+                <select id="withdrawCryptoSelect" class="form-control" onchange="WalletController.onWithdrawCryptoChange()">
+                  <option value="USDT">Tether USD (USDT - TRC20)</option>
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
+                  <option value="LTC">Litecoin (LTC)</option>
+                  <option value="DOGE">Dogecoin (DOGE)</option>
+                  <option value="TRX">Tron (TRX)</option>
+                  <option value="SOL">Solana (SOL)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Withdrawal Method</label>
+                <select id="withdrawMethodSelect" class="form-control" onchange="WalletController.onWithdrawCryptoChange()">
+                  <option value="faucetpay">FaucetPay (Instant, Minimum $0.50 / 500 Coins, 0% Fee)</option>
+                  <option value="direct">Direct Blockchain Wallet (Minimum $5.00 / 5,000 Coins, 100 Coins Network Fee)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Destination Address / FaucetPay Email</label>
+                <input type="text" id="withdrawAddressInput" class="form-control" placeholder="Enter address or email" required>
+              </div>
+
+              <div class="form-group">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <label style="margin-bottom:0;">Amount in Coins</label>
+                  <a href="javascript:void(0)" style="font-size:0.8rem;font-weight:700;" onclick="WalletController.setMaxWithdrawal()">Max Balance</a>
+                </div>
+                <input type="number" id="withdrawCoinsInput" class="form-control" placeholder="e.g. 1500" min="500" required oninput="WalletController.onWithdrawCryptoChange()">
+              </div>
+
+              <!-- Live Conversion & Fee Box -->
+              <div style="background:var(--bg-surface);border:1px solid var(--border-active);border-radius:var(--radius-md);padding:16px;margin:20px 0;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.9rem;">
+                  <span style="color:var(--text-muted);">Estimated Payout:</span>
+                  <strong style="color:var(--accent-green);font-size:1.05rem;" id="withdrawCryptoEquivalent">≈ 0.00000000</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-dim);margin-bottom:6px;">
+                  <span>Transaction Fee:</span>
+                  <span id="withdrawFeeDisplay">0 Coins</span>
+                </div>
+                <div style="font-size:0.75rem;color:var(--text-dim);" id="withdrawMinNotice">
+                  Minimum: 500 Coins ($0.50) | Fee: 0 Coins
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+                📤 Submit Withdrawal Request
+              </button>
+
+            </form>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           13. VIEW: ADVERTISER DASHBOARD
+           ==================================================================== -->
+      <section id="view-advertiser" class="view-panel">
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+          <div>
+            <span class="badge badge-gold">Advertiser Portal</span>
+            <h2 class="section-title">Campaigns & Traffic Management</h2>
+            <p class="section-desc">Create high-impact crypto advertisements with real-time impression delivery and in-platform synchronicity.</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-secondary" onclick="navigateTo('deposit')">Deposit Funds</button>
+            <button class="btn btn-primary" onclick="navigateTo('advertiser-create')">➕ Create New Campaign</button>
+          </div>
+        </div>
+
+        <!-- Advertiser Stats Grid -->
+        <div class="dashboard-grid">
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Advertising Balance</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--accent-green);" id="advBalanceDisplay">$25.00</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">Available for new campaigns</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Active Campaigns</div>
+            <div style="font-size:2rem;font-weight:900;" id="advActiveCount">5</div>
+            <div style="font-size:0.75rem;color:var(--secondary);margin-top:4px;">Delivering live impressions</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Delivered Clicks / Views</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--primary);" id="advDeliveredViews">4,466</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">Verified human visitors</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Average CPC</div>
+            <div style="font-size:2rem;font-weight:900;color:var(--accent-gold);" id="advAvgCpc">$0.0006</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">Among lowest in the crypto industry</div>
+          </div>
+        </div>
+
+        <!-- Transfer Earning Balance with +5% Bonus Box -->
+        <div class="card" style="margin-bottom:28px;background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(6,182,212,0.1));border-color:var(--border-glow);">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+              <span class="badge badge-gold">+5% Promotion</span>
+              <h3 style="margin:8px 0 4px;">Transfer Earner Coins to Advertising Balance</h3>
+              <p style="font-size:0.85rem;color:var(--text-muted);">Convert your accumulated rewards into advertising credits with an extra 5% bonus added free!</p>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <input type="number" id="advTransferCoinsInput" class="form-control" placeholder="Coins to transfer (min 500)" style="width:240px;">
+              <button class="btn btn-gold" onclick="AdvertiserController.transferEarningsToAds()">Transfer + 5% Bonus</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Campaigns Table -->
+        <div class="card" style="margin-bottom:28px;">
+          <h3 style="margin-bottom:16px;">Your Active & Past Campaigns</h3>
+          
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Campaign Title / URL</th>
+                  <th>Format</th>
+                  <th>Views Delivered / Total</th>
+                  <th>User Reward</th>
+                  <th>Cost / View</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="advCampaignsTableBody">
+                <!-- Dynamically rendered by advertiser.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Promo Vouchers / Coupons Section -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:18px;">
+            <div>
+              <h3>Promo Codes & Vouchers Engine</h3>
+              <p style="font-size:0.85rem;color:var(--text-muted);">Redeem coupons for free coins or generate promotional vouchers for your followers.</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="voucherRedeemInput" class="form-control" placeholder="Enter Promo Code" style="text-transform:uppercase;width:180px;">
+              <button class="btn btn-primary" onclick="AdvertiserController.redeemVoucher()">Redeem</button>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <h4 style="font-size:0.9rem;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">Active Community Vouchers</h4>
+            <div id="advVouchersList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           14. VIEW: CREATE ADVERTISEMENT WIZARD
+           ==================================================================== -->
+      <section id="view-advertiser-create" class="view-panel">
+        
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-primary">Campaign Builder</span>
+          <h2 class="section-title">Create New Advertisement Campaign</h2>
+          <p class="section-desc">Advertisements created here instantly appear in the PTC section and users will view them to earn rewards!</p>
+        </div>
+
+        <div style="max-width:820px;margin:0 auto;">
+          <div class="card">
+            
+            <form onsubmit="event.preventDefault(); AdvertiserController.submitNewCampaign();">
+              
+              <div class="form-group">
+                <label>Campaign Title</label>
+                <input type="text" id="advCreateTitle" class="form-control" placeholder="e.g. Stake SOL with 15% APY on SolFarm" required>
+              </div>
+
+              <div class="form-group">
+                <label>Engaging Description (shown to earners)</label>
+                <textarea id="advCreateDesc" class="form-control" rows="2" placeholder="Brief summary of your product or service..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Target Destination URL</label>
+                <input type="url" id="advCreateUrl" class="form-control" placeholder="https://yourwebsite.com/landing" required>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+                <div class="form-group">
+                  <label>Ad Format</label>
+                  <select id="advCreateType" class="form-control">
+                    <option value="ptc">PTC Standard (Surf View)</option>
+                    <option value="window">Window Ad (Active Tab Focus Required)</option>
+                    <option value="iframe">Iframe In-Platform Preview</option>
+                    <option value="youtube">YouTube Video Embedded Ad</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Viewing Duration</label>
+                  <select id="advCreateDuration" class="form-control">
+                    <option value="5">5 Seconds (Fastest)</option>
+                    <option value="10">10 Seconds</option>
+                    <option value="15" selected>15 Seconds (Standard)</option>
+                    <option value="30">30 Seconds (Recommended)</option>
+                    <option value="60">60 Seconds (Maximum Exposure)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Total Views to Purchase</label>
+                  <input type="number" id="advCreateViews" class="form-control" value="1000" min="100" step="100" required>
+                </div>
+              </div>
+
+              <!-- YouTube ID group (visible only when format is YouTube) -->
+              <div class="form-group" id="advYoutubeIdGroup" style="display:none;">
+                <label>YouTube Video ID</label>
+                <input type="text" id="advCreateYoutubeId" class="form-control" placeholder="e.g. dQw4w9WgXcQ (from youtube.com/watch?v=...)">
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+                <div class="form-group">
+                  <label>Daily Views Cap</label>
+                  <input type="number" id="advCreateDailyCap" class="form-control" value="500" min="50">
+                </div>
+
+                <div class="form-group">
+                  <label>Geo-Targeting (Worldwide Enabled)</label>
+                  <select id="advCreateGeo" class="form-control">
+                    <option value="Global">Worldwide (All 200+ Countries)</option>
+                    <option value="North America">North America (US, CA, MX)</option>
+                    <option value="Europe">Europe (UK, DE, FR, ES, IT, NL)</option>
+                    <option value="Asia-Pacific">Asia-Pacific (IN, ID, VN, PH, JP, KR)</option>
+                    <option value="Latin America">Latin America (BR, AR, CO, CL)</option>
+                    <option value="Africa & Middle East">Africa & Middle East (NG, ZA, EG, AE, SA)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Live Cost Calculation Card -->
+              <div style="background:var(--bg-surface);border:1px solid var(--border-active);border-radius:var(--radius-lg);padding:20px;margin:24px 0;">
+                <h4 style="margin-bottom:12px;color:var(--text-main);">Live Campaign Cost & Reward Estimation</h4>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+                  <div>
+                    <div style="font-size:0.75rem;color:var(--text-dim);">Cost Per Human View:</div>
+                    <strong style="color:var(--secondary);font-size:1.15rem;" id="advCalcCostPerView">$0.0006</strong>
+                  </div>
+                  <div>
+                    <div style="font-size:0.75rem;color:var(--text-dim);">Earner Reward:</div>
+                    <strong style="color:var(--accent-green);font-size:1.15rem;" id="advCalcRewardPerView">35 Coins</strong>
+                  </div>
+                  <div>
+                    <div style="font-size:0.75rem;color:var(--text-dim);">Total Campaign Cost:</div>
+                    <strong style="color:var(--accent-gold);font-size:1.4rem;" id="advCalcTotalCost">$0.60</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:12px;justify-content:flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="navigateTo('advertiser')">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-lg">🚀 Launch Live Campaign</button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           15. VIEW: PROFILE & ACCOUNT SETTINGS
+           ==================================================================== -->
+      <section id="view-profile" class="view-panel">
+        
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-primary">Account Management</span>
+          <h2 class="section-title">Profile, Wallets & Security Settings</h2>
+          <p class="section-desc">Preset your default cryptocurrency withdrawal addresses and configure account authentication.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+          
+          <!-- Wallet Addresses Preset -->
+          <div class="card">
+            <h3 style="margin-bottom:18px;">Your Profile &amp; Country</h3>
+
+            <div class="form-group">
+              <label>Country of Residence (Worldwide Access &bull; 200+ Countries)</label>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <select id="setCountrySelect" class="form-control" style="flex:1;"></select>
+                <span class="badge badge-green" id="profileCountryBadge">🇺🇸 United States</span>
+              </div>
+            </div>
+
+            <h4 style="margin:20px 0 12px;font-size:1.05rem;">Saved Withdrawal Addresses</h4>
+
+            <div class="form-group">
+              <label>FaucetPay Linked Email</label>
+              <input type="email" id="setFaucetPayEmail" class="form-control" value="alex.crypto@gmail.com">
+            </div>
+
+            <div class="form-group">
+              <label>Bitcoin (BTC) Address</label>
+              <input type="text" id="setBtcAddress" class="form-control" value="1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa">
+            </div>
+
+            <div class="form-group">
+              <label>Tether (USDT TRC-20) Address</label>
+              <input type="text" id="setUsdtAddress" class="form-control" value="TYDzsYUEpvnYmQk4zGP9sWWcTEd3YiAtW6">
+            </div>
+
+            <div class="form-group">
+              <label>Litecoin (LTC) Address</label>
+              <input type="text" id="setLtcAddress" class="form-control" value="LhyXZw8Vw7484wJ7vQh81x23Z7hG15u3Vz">
+            </div>
+
+            <div class="form-group">
+              <label>Dogecoin (DOGE) Address</label>
+              <input type="text" id="setDogeAddress" class="form-control" value="DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L">
+            </div>
+
+            <div class="form-group">
+              <label>Tron (TRX) Address</label>
+              <input type="text" id="setTrxAddress" class="form-control" value="TND8mGjQ8U93Z2v4Vz3W7eA9yB8c12D4Ef">
+            </div>
+
+            <div class="form-group">
+              <label>Solana (SOL) Address</label>
+              <input type="text" id="setSolAddress" class="form-control" value="7EYnhQoR9YM3N7UoaKRoA44CW2fPee2PnWbCpWNJydU">
+            </div>
+
+            <button class="btn btn-primary" onclick="AuthController.saveProfileSettings()">Save Wallet Addresses</button>
+          </div>
+
+          <!-- Security & 2FA -->
+          <div class="card">
+            <h3 style="margin-bottom:18px;">Security & Anti-Fraud</h3>
+
+            <div style="background:var(--bg-surface);padding:16px;border-radius:var(--radius-md);margin-bottom:20px;">
+              <div style="font-weight:700;margin-bottom:4px;">Two-Factor Authentication (2FA)</div>
+              <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">Protect your withdrawals with Google Authenticator or Authy.</p>
+              <button id="twoFactorToggleBtn" class="btn btn-secondary btn-sm" onclick="AuthController.toggle2FA()">Enable 2FA</button>
+            </div>
+
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" class="form-control" placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" class="form-control" placeholder="••••••••">
+            </div>
+
+            <button class="btn btn-secondary" onclick="showToast('Password updated successfully!', 'success')">Change Password</button>
+
+            <!-- Active Sessions List -->
+            <div style="margin-top:24px;border-top:1px solid var(--border-subtle);padding-top:20px;">
+              <h4>Active Login Sessions</h4>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:10px;line-height:1.6;">
+                <div>🟢 <strong>Current Session:</strong> Windows 10 &bull; Chrome 128 &bull; IP: 198.51.100.44</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           16. VIEW: PAYMENT PROOFS
+           ==================================================================== -->
+      <section id="view-proofs" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-green">Transparency</span>
+          <h2 class="section-title">Live Payment Proofs Feed</h2>
+          <p class="section-desc">Real-time ledger of verified payouts sent to our members via FaucetPay and blockchain transactions.</p>
+        </div>
+
+        <div class="card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Cryptocurrency</th>
+                  <th>Amount</th>
+                  <th>Payout Channel</th>
+                  <th>Time</th>
+                  <th>Blockchain Tx Hash</th>
+                </tr>
+              </thead>
+              <tbody id="paymentProofsTableBody">
+                <!-- Dynamically rendered by support.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           17. VIEW: FAQ & INFORMATION
+           ==================================================================== -->
+      <section id="view-faq" class="view-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-primary">Help Center</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-desc">Everything you need to know about earning, claiming faucets, advertising, and withdrawals.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:860px;">
+          
+          <div class="card" style="cursor:pointer;" onclick="SupportController.toggleFaq(this)">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1.1rem;">
+              <span>What is CryptoPulse and how does it work?</span>
+              <span class="faq-icon" style="font-size:1.4rem;">+</span>
+            </div>
+            <div style="display:none;margin-top:12px;color:var(--text-muted);font-size:0.925rem;line-height:1.6;">
+              CryptoPulse is an online rewards and advertising platform. Advertisers fund campaigns to promote their projects, and our registered members earn a share of those revenues by viewing ads, claiming from faucets, and completing surveys.
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;" onclick="SupportController.toggleFaq(this)">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1.1rem;">
+              <span>What is the minimum withdrawal amount and fee?</span>
+              <span class="faq-icon" style="font-size:1.4rem;">+</span>
+            </div>
+            <div style="display:none;margin-top:12px;color:var(--text-muted);font-size:0.925rem;line-height:1.6;">
+              Withdrawals to FaucetPay have a very low minimum of just $0.50 (500 Coins) and 0% transaction fee. Direct blockchain withdrawals to BTC, ETH, LTC, DOGE, TRX, and SOL have a $5.00 (5,000 Coins) minimum and a small network fee.
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;" onclick="SupportController.toggleFaq(this)">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1.1rem;">
+              <span>How does the Loyalty Streak bonus work?</span>
+              <span class="faq-icon" style="font-size:1.4rem;">+</span>
+            </div>
+            <div style="display:none;margin-top:12px;color:var(--text-muted);font-size:0.925rem;line-height:1.6;">
+              Every consecutive day you log in and make at least one faucet claim or check-in, your loyalty bonus increases by +1%, up to +100%. This doubles your base faucet rewards!
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer;" onclick="SupportController.toggleFaq(this)">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:1.1rem;">
+              <span>How fast do new advertising campaigns go live?</span>
+              <span class="faq-icon" style="font-size:1.4rem;">+</span>
+            </div>
+            <div style="display:none;margin-top:12px;color:var(--text-muted);font-size:0.925rem;line-height:1.6;">
+              All campaigns created through the Advertiser Portal are activated immediately inside the PTC Advertisements section for earners. When an earner views the ad, the remaining view count updates in real-time.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           18. VIEW: SUPPORT TICKETS
+           ==================================================================== -->
+      <section id="view-support" class="view-panel">
+        
+        <div class="section-header" style="text-align:left;margin-bottom:24px;">
+          <span class="badge badge-cyan">Customer Care</span>
+          <h2 class="section-title">Support Tickets & Inquiries</h2>
+          <p class="section-desc">Need assistance with your account, withdrawal, or advertising campaign? Our team is here 24/7.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+          
+          <!-- Submit Ticket Form -->
+          <div class="card">
+            <h3 style="margin-bottom:18px;">Open a New Support Ticket</h3>
+
+            <div class="form-group">
+              <label>Subject</label>
+              <input type="text" id="ticketSubjectInput" class="form-control" placeholder="Brief subject..." required>
+            </div>
+
+            <div class="form-group">
+              <label>Category</label>
+              <select id="ticketCategorySelect" class="form-control">
+                <option value="Withdrawal">Withdrawals & Payouts</option>
+                <option value="Faucet">Faucet & Earning</option>
+                <option value="Advertiser">Advertiser Campaigns</option>
+                <option value="Account">Account Security</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Message Details</label>
+              <textarea id="ticketMessageInput" class="form-control" rows="4" placeholder="Describe the question or issue in detail..." required></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="SupportController.createNewTicket()">Submit Ticket</button>
+          </div>
+
+          <!-- Existing Tickets -->
+          <div class="card">
+            <h3 style="margin-bottom:18px;">Your Ticket History</h3>
+            <div id="supportTicketsList">
+              <!-- Dynamically populated by support.js -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           19. VIEW: SUPERADMIN DASHBOARD (ADMIN ROOT)
+           ==================================================================== -->
+      <section id="view-admin" class="view-panel">
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+          <div>
+            <span class="badge badge-purple">SuperAdmin Console</span>
+            <h2 class="section-title">Platform Administration & Governance</h2>
+            <p class="section-desc">Manage platform users, approve queued withdrawals, moderate ad campaigns, and adjust settings.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="AdminController.render()">↻ Refresh Admin Data</button>
+        </div>
+
+        <!-- Admin High-Level Metrics -->
+        <div class="dashboard-grid">
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Registered Users</div>
+            <div style="font-size:1.8rem;font-weight:900;" id="adminStatUsers">4 Registered</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Active Ad Campaigns</div>
+            <div style="font-size:1.8rem;font-weight:900;color:var(--secondary);" id="adminStatAds">5 Active</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Pending Withdrawals</div>
+            <div style="font-size:1.8rem;font-weight:900;color:var(--accent-gold);" id="adminStatPendingWd">1 Pending Review</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:0.8rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Platform Hot Wallet Reserve</div>
+            <div style="font-size:1.8rem;font-weight:900;color:var(--accent-green);" id="adminStatReserve">$4,850.00 USD</div>
+          </div>
+        </div>
+
+        <!-- Pending Withdrawals Queue (1-Click Approve / Reject) -->
+        <div class="card" style="margin-bottom:28px;">
+          <h3 style="margin-bottom:14px;color:var(--accent-gold);">⚡ Pending Withdrawals Queue</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">Review pending payouts. Approving triggers simulated instant FaucetPay API dispatch.</p>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Member</th>
+                  <th>Amount</th>
+                  <th>Destination Address / Email</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminWithdrawalsTableBody">
+                <!-- Dynamically populated by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- User Management Table -->
+        <div class="card" style="margin-bottom:28px;">
+          <h3 style="margin-bottom:14px;">User Directory & Balance Control</h3>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User / Email</th>
+                  <th>Role</th>
+                  <th>Balance</th>
+                  <th>Verified</th>
+                  <th>Status</th>
+                  <th>Quick Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersTableBody">
+                <!-- Dynamically populated by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Ad Moderation Table -->
+        <div class="card" style="margin-bottom:28px;">
+          <h3 style="margin-bottom:14px;">Advertiser Campaigns Moderation</h3>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Campaign Title / Owner</th>
+                  <th>Type</th>
+                  <th>Impressions Remaining</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminAdModerationTableBody">
+                <!-- Dynamically populated by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Platform Configuration Settings -->
+        <div class="card" style="margin-bottom:28px;">
+          <h3 style="margin-bottom:18px;">Platform Global Settings</h3>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+            <div class="form-group">
+              <label>Faucet Cooldown (Minutes)</label>
+              <input type="number" id="adminSetFaucetCooldown" class="form-control" value="5">
+            </div>
+
+            <div class="form-group">
+              <label>Faucet Base Reward (Coins)</label>
+              <input type="number" id="adminSetFaucetBase" class="form-control" value="50">
+            </div>
+
+            <div class="form-group" style="display:flex;flex-direction:column;justify-content:center;">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="adminSetGlobalRegToggle" style="width:20px;height:20px;accent-color:var(--primary);" checked>
+                <span>Allow Worldwide Registration (All 200+ Countries)</span>
+              </label>
+            </div>
+
+            <div class="form-group" style="display:flex;flex-direction:column;justify-content:center;">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="adminSetAdsenseToggle" style="width:20px;height:20px;accent-color:var(--primary);">
+                <span>Enable Google AdSense Banners</span>
+              </label>
+            </div>
+
+            <div class="form-group" style="display:flex;flex-direction:column;justify-content:center;">
+              <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                <input type="checkbox" id="adminSetAdblockToggle" style="width:20px;height:20px;accent-color:var(--primary);">
+                <span>Enable Anti-Adblock Checker</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="AdminController.saveSettings()">Save Global Platform Settings</button>
+        </div>
+
+        <!-- Anti-Fraud Security Audit Logs -->
+        <div class="card">
+          <h3 style="margin-bottom:14px;">Security & Anti-Fraud Audit Trail</h3>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>IP Address</th>
+                  <th>User</th>
+                  <th>Activity Event</th>
+                  <th>Risk Rating</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="adminAuditLogsTableBody">
+                <!-- Dynamically populated by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ==========================================================================
+       BOTTOM SPONSORED ADVERTISEMENT BANNER (AdSense Zone)
+       ========================================================================== -->
+  <div class="adsense-zone responsive-banner">
+    <div class="adsense-box">
+      <div class="adsense-tag">
+        <span>Sponsored Ad Placement</span> &bull; <span>Google AdSense</span>
+      </div>
+      <div class="adsense-mock-content">
+        <div style="font-size:2rem;">⚡</div>
+        <div class="adsense-mock-text">
+          <h5>Next-Gen Automated DEX Arbitrage Protocol</h5>
+          <p>Zero gas fee routing, instant cross-chain swaps on Arbitrum, Base and Optimism.</p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="showToast('AdSense click simulated.', 'info')">Learn More</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer style="background:var(--bg-card);border-top:1px solid var(--border-subtle);padding:40px 24px;margin-top:auto;">
+    <div style="max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:30px;">
+      
+      <div style="max-width:340px;">
+        <div class="brand-logo" style="margin-bottom:12px;">
+          <span>Crypto<span class="text-gradient">Pulse</span></span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.6;">
+          Leading crypto rewards ecosystem and verified human advertising network. Earn Bitcoin, Ethereum, USDT, and popular altcoins through daily tasks and faucets.
+        </p>
+      </div>
+
+      <div>
+        <div style="font-weight:700;font-size:0.9rem;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Quick Links</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;">
+          <a href="javascript:void(0)" onclick="navigateTo('home')">Home</a>
+          <a href="javascript:void(0)" onclick="navigateTo('dashboard')">User Dashboard</a>
+          <a href="javascript:void(0)" onclick="navigateTo('faucet')">Crypto Faucet</a>
+          <a href="javascript:void(0)" onclick="navigateTo('ptc')">PTC Advertisements</a>
+          <a href="javascript:void(0)" onclick="navigateTo('advertiser')">Advertiser Portal</a>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-weight:700;font-size:0.9rem;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Security & Proofs</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;">
+          <a href="javascript:void(0)" onclick="navigateTo('proofs')">Live Payment Proofs</a>
+          <a href="javascript:void(0)" onclick="navigateTo('faq')">Help & FAQ</a>
+          <a href="javascript:void(0)" onclick="navigateTo('support')">Contact Support</a>
+          <a href="javascript:void(0)" onclick="showToast('Platform operates on 256-bit SSL encryption.', 'info')">Security Standards</a>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-weight:700;font-size:0.9rem;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Legal</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;color:var(--text-muted);">
+          <span>Terms of Service</span>
+          <span>Privacy Policy</span>
+          <span>Anti-Fraud Compliance</span>
+          <span>Cookie Policy</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="max-width:1400px;margin:30px auto 0;padding-top:20px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:0.8rem;color:var(--text-dim);">
+      <span>© 2026 CryptoPulse Rewards & Advertising. All rights reserved.</span>
+      <span>Operating with FaucetPay & Blockchain API Integrations</span>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MOBILE BOTTOM NAVIGATION BAR (Thumb-friendly for Android & iPhone)
+       ========================================================================== -->
+  <div class="mobile-bottom-bar">
+    <div class="bottom-bar-item active" data-view="dashboard" onclick="navigateTo('dashboard')">
+      <span>📊</span>
+      <span>Dashboard</span>
+    </div>
+    <div class="bottom-bar-item" data-view="faucet" onclick="navigateTo('faucet')">
+      <span>💧</span>
+      <span>Faucet</span>
+    </div>
+    <div class="bottom-bar-item" data-view="ptc" onclick="navigateTo('ptc')">
+      <span>👁️</span>
+      <span>PTC</span>
+    </div>
+    <div class="bottom-bar-item" data-view="wallet" onclick="navigateTo('wallet')">
+      <span>💳</span>
+      <span>Wallet</span>
+    </div>
+    <div class="bottom-bar-item" onclick="toggleMobileDrawer()">
+      <span>☰</span>
+      <span>Menu</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: AD VIEWER OVERLAY
+       ========================================================================== -->
+  <div id="adViewerModal" class="ad-viewer-modal">
+    <div class="ad-viewer-header">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span class="badge badge-primary">SPONSORED AD</span>
+        <span id="adViewerTitle" style="font-weight:700;font-size:0.95rem;">Ad Title</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:18px;">
+        <div style="font-size:1.1rem;font-weight:900;color:var(--secondary);font-family:monospace;" id="adViewerTimer">
+          15s
+        </div>
+
+        <!-- Verification container (shown when timer hits 0) -->
+        <div id="adViewerVerifyBox" style="display:none;"></div>
+
+        <button class="btn btn-outline btn-sm" onclick="PtcController.closeViewer()">✕ Close</button>
+      </div>
+
+      <div class="ad-progress-bar-bg">
+        <div class="ad-progress-bar-fill" id="adViewerProgressBar"></div>
+      </div>
+    </div>
+
+    <!-- Ad Content Container (Iframe or Simulated Preview) -->
+    <div id="adViewerFrameContainer" class="ad-viewport"></div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: SHORTLINK SIMULATOR
+       ========================================================================== -->
+  <div id="shortlinkModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="ShortlinksController.closeModal()">✕</button>
+      <div id="shortlinkModalContent">
+        <!-- Injected by shortlinks.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: SURVEY / OFFERWALL SESSION
+       ========================================================================== -->
+  <div id="offerwallSurveyModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="OfferwallsController.closeModal()">✕</button>
+      <div id="offerwallSurveyContent">
+        <!-- Injected by offerwalls.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: AUTHENTICATION (LOGIN & REGISTRATION)
+       ========================================================================== -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="AuthController.closeModal()">✕</button>
+
+      <div style="text-align:center;margin-bottom:20px;">
+        <div class="brand-logo" style="justify-content:center;margin-bottom:8px;">
+          <span>Crypto<span class="text-gradient">Pulse</span></span>
+        </div>
+        <div style="font-size:0.85rem;color:var(--text-muted);" id="authRoleHint">Member Access Portal</div>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button id="authTabLogin" class="btn btn-primary btn-sm" style="flex:1;" onclick="AuthController.showLogin()">Sign In</button>
+        <button id="authTabRegister" class="btn btn-secondary btn-sm" style="flex:1;" onclick="AuthController.showRegister()">Register</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="authLoginForm" onsubmit="AuthController.handleLogin(event)">
+        <div class="form-group">
+          <label>Username or Email Address</label>
+          <input type="text" id="loginUsername" class="form-control" value="Alex_Crypto" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" class="form-control" value="password123" required>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:0.8rem;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" checked>
+            <span>Remember me</span>
+          </label>
+          <a href="javascript:void(0)" onclick="AuthController.showRecoveryModal()">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">Sign In</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="authRegisterForm" style="display:none;" onsubmit="AuthController.handleRegister(event)">
+        <div class="form-group">
+          <label>Account Role</label>
+          <select id="regAccountRole" class="form-control">
+            <option value="user">Earner (Earn free cryptocurrency)</option>
+            <option value="advertiser">Advertiser (Promote my websites & links)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="regUsername" class="form-control" placeholder="Choose a username" required>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Country of Residence (Worldwide Access &bull; 200+ Countries Welcome)</label>
+          <select id="regCountry" class="form-control" required></select>
+        </div>
+
+        <div class="form-group">
+          <label>Referral Code (Optional)</label>
+          <input type="text" id="regReferralInput" class="form-control" placeholder="e.g. ALEX2026">
+        </div>
+
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.8rem;cursor:pointer;">
+            <input type="checkbox" required checked>
+            <span>I agree to the Terms of Service and Anti-Fraud Rules</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">Create Free Account (+150 Coins Bonus)</button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: PASSWORD RECOVERY
+       ========================================================================== -->
+  <div id="recoveryModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="AuthController.closeRecoveryModal()">✕</button>
+
+      <h3 style="margin-bottom:10px;">Recover Password</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:20px;">Enter your registered email address to receive password reset instructions.</p>
+
+      <form onsubmit="AuthController.handleRecovery(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="recoveryEmail" class="form-control" placeholder="name@example.com" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">Send Reset Instructions</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Script Modules -->
+  <script src="js/countries.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/faucet.js"></script>
+  <script src="js/ptc.js"></script>
+  <script src="js/shortlinks.js"></script>
+  <script src="js/offerwalls.js"></script>
+  <script src="js/challenges.js"></script>
+  <script src="js/referrals.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/advertiser.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/support.js"></script>
+
+</body>
+</html>
